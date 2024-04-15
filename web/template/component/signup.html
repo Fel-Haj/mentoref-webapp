@@ -1,0 +1,21 @@
+<form id="form" hx-post="/signup" hx-target="#body" hx-swap="outerHTML"
+    class="flex flex-col items-center border border-main rounded-md shadow-lg gap-3 p-4">
+    <a class="absolute top-0 right-1 cursor-pointer" hx-get="/" hx-target="#body" hx-swap="outerHTML">
+        <i class="fa-solid fa-xmark hover:text-gray-400"></i>
+    </a>
+    <input type="email" name="email" required placeholder="E-Mail" class="border border-black rounded-md px-2">
+    <input type="password" name="password" required placeholder="Password" class="border border-black rounded-md px-2">
+    <input type="text" name="firstname" required placeholder="First Name" class="border border-black rounded-md px-2">
+    <input type="text" name="surname" required placeholder="Surname" class="border border-black rounded-md px-2">
+    <input type="tel" name="phone" placeholder="Phonenumber" class="border border-black rounded-md px-2">
+    <input type="text" name="company" placeholder="Company" class="border border-black rounded-md px-2">
+    <button type="submit"
+        class="w-2/3 cursor-pointer rounded-lg border-2 border-black text-white hover:text-black bg-black hover:bg-white transition-colors ease-in-out duration-300">Sign
+        Up</button>
+    <li class="flex gap-x-2">
+        <ul>Already have an account?</ul>
+        <a hx-get="/signin" hx-trigger="click" hx-target="#popup-window" hx-swap="innerHTML"
+            class="hover:text-blue-300 text-gray-500 cursor-pointer">Sign in
+        </a>
+    </li>
+</form>

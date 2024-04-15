@@ -1,0 +1,17 @@
+{
+  "name": "mentoref-webapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "tailwind": "tailwindcss -i web/static/css/input.css -o web/static/css/output.css --watch"
+  },
+  "keywords": [],
+  "author": "Felix Hajek",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1"
+  }
+}

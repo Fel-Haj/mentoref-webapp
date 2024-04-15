@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .input-text {
+      @apply border border-black rounded-md px-2;
+    }
+
+    .navbar-item {
+        @apply cursor-pointer hover:underline
+    }
+  }

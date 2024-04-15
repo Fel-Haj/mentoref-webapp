@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/x-icon" href="/static/image/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <script src="/static/js/htmx.min.js"></script>
+    <script src="https://kit.fontawesome.com/8e525bfb1d.js" crossorigin="anonymous"></script>
+    {{template "head" .}}
+</head>
+
+<body id="body" class="font-body">
+    <navbar class="flex items-center justify-end top-0 gap-x-16 py-4 px-16 border-b-2 border-black">
+        <a hx-get="/" hx-trigger="click" hx-target="body" hx-push-url="true" class="navbar-item">Home</a>
+        <a hx-get="/" hx-trigger="click" hx-target="body" hx-push-url="true" class="navbar-item">About</a>
+        <a hx-get="/" hx-trigger="click" hx-target="body" hx-push-url="true" class="navbar-item">Features</a>
+        <a hx-get="/" hx-trigger="click" hx-target="body" hx-push-url="true" class="navbar-item">Pricing</a>
+        <a hx-get="/" hx-trigger="click" hx-target="body" hx-push-url="true" class="navbar-item">Blog</a>
+        {{if .Authenticated}}
+        <div class="group ml-12 z-10">
+            <i class="fa-solid fa-user fa-xl group-hover:text-gray-600"></i>
+            <ul
+                class="absolute bg-white -translate-x-9 translate-y-2 border border-main rounded-md p-2 transition-opacity ease-in-out delay-100 duration-300 opacity-0 group-hover:opacity-100">
+                <a hx-get="/dashboard" hx-trigger="click" hx-target="#body" hx-swap="innerHTML" hx-push-url="true"
+                    class="pb-1 cursor-pointer hover:text-gray-400">Dashboard</a>
+                <a hx-post="/signout" hx-target="#body" hx-swap="outerHTML"
+                    class="cursor-pointer hover:text-gray-400">Sign Out</a>
+            </ul>
+        </div>
+        {{else}}
+        <a hx-get="/signin" hx-target="#popup-window"
+            class="cursor-pointer py-2 px-4 ml-12 rounded-lg border-2 border-black text-white hover:text-black bg-black hover:bg-white transition-colors ease-in-out duration-300">
+            <span>Sign In</span>
+        </a>
+        {{end}}
+        </ul>
+    </navbar>
+    {{template "body" .}}
+    <footer class="bg-black text-white bottom-0 gap-2 p-16">
+        <div class="grid grid-cols-5 justify-items-center items-start">
+            <div class="col-span-2 self-center">
+                <p>Contact us at <a href="mailto:info@mentoref.com">info@mentoref.com</a>.</p>
+            </div>
+            <ul class="flex flex-col gap-y-6">
+                <h1 class="font-bold">Info</h1>
+                <li>Home</li>
+                <li>Pricing</li>
+                <li>About Us</li>
+                <li>Blog</li>
+                <li>Feature</li>
+            </ul>
+            <ul class="flex flex-col gap-y-6">
+                <h1 class="font-bold">Admin</h1>
+                <li>Style Guide</li>
+                <li>License</li>
+                <li>Log In</li>
+                <li>Sign Up</li>
+                <li>Downloads</li>
+            </ul>
+            <ul class="flex flex-col gap-y-6">
+                <h1 class="font-bold">Follow us</h1>
+                <li class="flex items-center gap-x-2">
+                    <i class="fa-brands fa-facebook"></i>
+                    <p>Facebook</p>
+                </li>
+                <li class="flex items-center gap-x-2">
+                    <i class="fa-brands fa-instagram"></i>
+                    <p>Instagram</p>
+                </li>
+                <li class="flex items-center gap-x-2">
+                    <i class="fa-brands fa-twitter"></i>
+                    <p>Twitter</p>
+                </li>
+                <li class="flex items-center gap-x-2">
+                    <i class="fa-brands fa-linkedin"></i>
+                    <p>LinkedIn</p>
+                </li>
+            </ul>
+        </div>
+        <p class="absolute left-0 bottom-0 ml-16">2024 MentoRef&copy;. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

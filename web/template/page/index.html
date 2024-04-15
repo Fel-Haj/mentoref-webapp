@@ -1,0 +1,35 @@
+{{define "head"}}
+<title>{{.Title}}</title>
+{{end}}
+{{define "body"}}
+<div id="popup-window" class="absolute rounded-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white z-10">
+</div>
+<main class="bg-green-100 py-12">
+    <div class="grid grid-cols-2 gap-x-6 justify-items-center items-center px-16">
+        <div class="flex flex-col gap-y-8">
+            <h2 class="font-bold">Boost your career with one click!</h2>
+            <h1 class="text-4xl font-bold">Blank Shot - See what happens</h1>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis deserunt assumenda sapiente
+                praesentium? Similique corporis, natus temporibus reprehenderit error perspiciatis autem vel beatae
+                deleniti amet consequatur odio quod atque libero!</p>
+            <div class="flex gap-x-6">
+                <button type="submit" form="blank-shot"
+                    class="py-2 px-4 shadow rounded-lg border-solid border-2 border-black text-white hover:text-black bg-black hover:bg-white transition hover:-translate-y-1 hover:translate-x-1 ease-in-out duration-300">
+                    Shoot!
+                </button>
+                <button
+                    class="py-2 px-4 shadow rounded-lg border-solid border-2 border-black text-white hover:text-black bg-black hover:bg-white transition hover:-translate-y-1 hover:translate-x-1 ease-in-out duration-300">
+                    Learn more
+                </button>
+            </div>
+        </div>
+        <!-- <form id="blank-shot" hx-post="/blank-shot">
+            <input type="text" name="">
+            <input>
+        </form> -->
+        <div>
+
+        </div>
+    </div>
+</main>
+{{end}}
