@@ -3,3 +3,5 @@
 
 bin
 node_modules
+web/static/css/output.css
+web/security

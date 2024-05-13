@@ -40,5 +40,5 @@ func main() {
 	mux.HandleFunc("/signup", auth.SignUpHandler(client))
 	mux.HandleFunc("/signout", auth.SignOutHandler())
 
-	log.Fatal(http.ListenAndServe(":3000", mux))
+	log.Fatal(http.ListenAndServeTLS(":443", os.Getenv("certificate"), os.Getenv("private_key"), mux))
 }
