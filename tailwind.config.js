@@ -1,16 +1,24 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./web/template/**/*.{html,js}"],
-  theme: {
-    extend: {
-      colors: {
-        main: "#779FA1",
-        beige: "#fce5cd"
+
+export const content = ["./web/template/**/*.{html,js}"];
+export const theme = {
+  extend: {
+    colors: {
+      main: "#010e26",
+    },
+    animation: {
+      carousel: "carousel 40s linear infinite",
+    },
+    keyframes: {
+      carousel: {
+        to: {
+          transform: "translateX(-50%)",
+        },
       },
     },
-    fontFamily: {
-      "body": ["Outfit", "sans-serif"],
-    },
   },
-  plugins: [],
+  fontFamily: {
+    body: ["Outfit", "sans-serif"],
+  },
 };
+export const plugins = [];

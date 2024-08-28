@@ -1,17 +1,21 @@
-FROM node:alpine as tailwind
-WORKDIR /usr/local/app
-
-COPY . .
-
-RUN npm i
-RUN npm run tailwind_prod
-
-FROM golang:alpine
+FROM golang:alpine AS builder
 
 WORKDIR /usr/local/app
 
-COPY --from=tailwind /usr/local/app/web/static/css/output.css web/static/css/output.css
-COPY . .
-RUN go build -v -o bin/app
+RUN apk add --no-cache nodejs npm
 
-CMD [ "./bin/app" ]
+COPY . .
+
+RUN npm ci && npm run build
+
+RUN go build -o app cmd/main.go
+
+FROM alpine:latest
+
+WORKDIR /usr/local/app
+
+COPY --from=builder /usr/local/app/app .
+
+EXPOSE 443
+
+CMD ["./app"]

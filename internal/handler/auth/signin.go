@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"mentoref-webapp/api/handler"
-	"mentoref-webapp/api/middleware"
 	"mentoref-webapp/db"
+	"mentoref-webapp/internal/middleware"
+	"mentoref-webapp/internal/types"
 	"net/http"
 	"time"
 
@@ -18,11 +18,14 @@ import (
 func SignInHandler(client *mongo.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			err := handler.SignIn.Execute(w, nil)
+			err := types.SignIn.Execute(w, nil)
 			if err != nil {
+				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 				return
 			}
-		} else if r.Method == "POST" {
+		}
+
+		if r.Method == "POST" {
 			err := r.ParseForm()
 			if err != nil {
 				return
@@ -57,8 +60,8 @@ func SignInHandler(client *mongo.Client) http.HandlerFunc {
 	}
 }
 
-func AuthenticateUser(ctx context.Context, coll *mongo.Collection, email string, password string) (*db.User, error) {
-	var user db.User
+func AuthenticateUser(ctx context.Context, coll *mongo.Collection, email string, password string) (*types.User, error) {
+	var user types.User
 	err := coll.FindOne(ctx, bson.M{"email": email}).Decode(&user)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {

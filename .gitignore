@@ -1,7 +1,10 @@
+.air.toml
 .vscode
-.env
+**/.DS_Store
 
 bin
+certs
 node_modules
+tmp
+web/static/image/logo
 web/static/css/output.css
-web/security

@@ -3,8 +3,8 @@ package auth
 import (
 	"context"
 	"log"
-	"mentoref-webapp/api/handler"
 	"mentoref-webapp/db"
+	"mentoref-webapp/internal/types"
 	"net/http"
 	"time"
 
@@ -16,18 +16,21 @@ import (
 func SignUpHandler(client *mongo.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			err := handler.SignUp.Execute(w, nil)
+			err := types.SignUp.Execute(w, nil)
 			if err != nil {
-				log.Println("error executing template: %w", err)
+				http.Error(w, "Error rendering template", http.StatusInternalServerError)
+				return
 			}
-		} else if r.Method == "POST" {
+		}
+
+		if r.Method == "POST" {
 			err := r.ParseForm()
 			if err != nil {
 				log.Println("invalid form data: %w", err)
 				return
 			}
 
-			var newUser db.User
+			var newUser types.User
 
 			newUser.ID = primitive.NewObjectID()
 			newUser.Email = r.FormValue("email")

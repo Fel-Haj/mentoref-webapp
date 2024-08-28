@@ -1,10 +1,9 @@
-package page
+package user
 
 import (
 	"fmt"
-	"mentoref-webapp/api/handler"
-	"mentoref-webapp/api/middleware"
 	"mentoref-webapp/db"
+	"mentoref-webapp/internal/types"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -13,14 +12,14 @@ import (
 
 func DashboardHandler(client *mongo.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		userMail, ok := r.Context().Value(middleware.UserContextKey).(string)
+		userMail, ok := r.Context().Value(types.UserContextKey).(string)
 		if !ok {
-			http.Error(w, "Invalid user ID in context", http.StatusInternalServerError)
+			http.Error(w, "Invalid userMail in context", http.StatusInternalServerError)
 			return
 		}
 
 		coll := db.UserCollection(client)
-		var user db.User
+		var user types.User
 		err := coll.FindOne(r.Context(), bson.M{"email": userMail}).Decode(&user)
 		if err != nil {
 			if err == mongo.ErrNoDocuments {
@@ -29,12 +28,12 @@ func DashboardHandler(client *mongo.Client) http.HandlerFunc {
 			panic(err)
 		}
 
-		authenticated, ok := r.Context().Value(middleware.AuthContextKey).(bool)
+		authenticated, ok := r.Context().Value(types.AuthContextKey).(bool)
 		if !ok {
 			authenticated = false
 		}
 
-		data := handler.PageData{
+		data := types.PageData{
 			Title:         fmt.Sprintf("%s %s - Profile", user.FirstName, user.Surname),
 			UserName:      user.FirstName,
 			UserSurname:   user.Surname,
@@ -42,7 +41,11 @@ func DashboardHandler(client *mongo.Client) http.HandlerFunc {
 			Authenticated: authenticated,
 		}
 
-		handler.Dashboard.Execute(w, data)
+		err = types.Dashboard.Execute(w, data)
+		if err != nil {
+			http.Error(w, "Error rendering template", http.StatusInternalServerError)
+			return
+		}
 
 	}
 }
