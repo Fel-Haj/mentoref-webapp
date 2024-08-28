@@ -7,4 +7,4 @@ certs
 node_modules
 tmp
 web/static/image/logo
-web/static/css/output.css
+web/static/css/styles.css
