@@ -2,18 +2,17 @@ package auth
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"mentoref-webapp/db"
 	"mentoref-webapp/internal/handler"
 	"net/http"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func SignUpHandler(client *mongo.Client) http.HandlerFunc {
+func SignUpHandler(dbClient *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
 			err := handler.SignUp.Execute(w, nil)
@@ -32,13 +31,11 @@ func SignUpHandler(client *mongo.Client) http.HandlerFunc {
 
 			var newUser db.User
 
-			newUser.ID = primitive.NewObjectID()
 			newUser.Email = r.FormValue("email")
 			newUser.Password = r.FormValue("password")
 			newUser.FirstName = r.FormValue("firstname")
-			newUser.Surname = r.FormValue("surname")
+			newUser.LastName = r.FormValue("lastname")
 			newUser.Phone = r.FormValue("phone")
-			newUser.CompanyName = r.FormValue("company")
 
 			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), 14)
 			if err != nil {
@@ -46,12 +43,13 @@ func SignUpHandler(client *mongo.Client) http.HandlerFunc {
 			}
 			newUser.Password = string(hashedPassword)
 
-			usersCollection := db.UserCollection(client)
-
 			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 			defer cancel()
 
-			_, err = usersCollection.InsertOne(ctx, newUser)
+			_, err = dbClient.ExecContext(ctx,
+				`INSERT INTO users (email, password, first_name, last_name, phone, company_name)
+					VALUES ($1, $2, $3, $4, $5)`,
+				newUser.Email, newUser.Password, newUser.FirstName, newUser.LastName, newUser.Phone)
 			if err != nil {
 				if ctx.Err() == context.DeadlineExceeded {
 					log.Println("request timed out, please try again: %w", err)

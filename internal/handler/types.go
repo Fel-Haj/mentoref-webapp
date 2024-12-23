@@ -7,8 +7,8 @@ import (
 
 type PageData struct {
 	Title         string
-	UserName      string
-	UserSurname   string
+	UserFirstName string
+	UserLastName  string
 	UserMail      string
 	UserPhone     string
 	Authenticated bool
