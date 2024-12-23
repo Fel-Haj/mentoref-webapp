@@ -3,12 +3,24 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"mentoref-webapp/internal/types"
+	"mentoref-webapp/db"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+)
+
+type BoolContextKey bool
+type UserMailContextKey string
+
+var (
+	AuthContextKey BoolContextKey
+	UserContextKey UserMailContextKey
+)
+
+const (
+	UserMailKey string = "userMail"
 )
 
 func JWTAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
@@ -32,8 +44,8 @@ func JWTAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 					http.Error(w, "Invalid token claims", http.StatusUnauthorized)
 					return
 				} else {
-					ctx = context.WithValue(ctx, types.AuthContextKey, true)
-					ctx = context.WithValue(ctx, types.UserContextKey, claims[types.UserMailKey])
+					ctx = context.WithValue(ctx, AuthContextKey, true)
+					ctx = context.WithValue(ctx, UserContextKey, claims[UserMailKey])
 				}
 			}
 		}
@@ -41,9 +53,9 @@ func JWTAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func GenerateToken(user *types.User) (string, error) {
+func GenerateToken(user *db.User) (string, error) {
 	claims := jwt.MapClaims{
-		types.UserMailKey: user.Email,
+		UserMailKey: user.Email,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

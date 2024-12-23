@@ -1,0 +1,92 @@
+<form
+    class="flex flex-col items-center border border-test rounded-md shadow-lg gap-3 p-4"
+>
+    <a
+        _="on click add .popup-hidden to #popup-window then remove .blur-bg from #main"
+        class="absolute top-0 right-1 cursor-pointer"
+    >
+        <i class="fa-solid fa-xmark hover:text-gray-400"></i>
+    </a>
+
+    <legend class="pb-2 font-semibold underline">
+        Select Filters for your Blank-Shot
+    </legend>
+    <label for="continent">Continent:</label>
+    <select
+        id="continent"
+        name="continent"
+        _="on change trigger updateCountryOptions"
+    >
+        <option value="">Select Continent</option>
+        <option value="europe">Europe</option>
+        <option value="north america">North America</option>
+    </select>
+
+    <label for="country">Country:</label>
+    <select
+        id="country"
+        name="country"
+        _="on change trigger updateStateOptions"
+    >
+        <option value="">Select Country</option>
+        <option value="spain" data-continent="europe">Spain</option>
+        <option value="usa" data-continent="north america">USA</option>
+        <option value="canada" data-continent="north america">Canada</option>
+    </select>
+
+    <label for="state">State:</label>
+    <select id="state" name="state">
+        <option value="">Select State</option>
+        <option value="andalusia" data-country="spain">Andalusia</option>
+        <option value="catalonia" data-country="spain">Catalonia</option>
+        <option value="madrid" data-country="spain">Madrid</option>
+        <option value="valencia" data-country="spain">Valencia</option>
+        <option value="california" data-country="usa">California</option>
+        <option value="texas" data-country="usa">Texas</option>
+    </select>
+
+    <label for="remote">
+        <input type="checkbox" id="remote" name="remote" />
+        Remote
+    </label>
+
+    <label for="job-function">Job Function:</label>
+    <select id="job-function" name="job-function">
+        <option value="">Select Job Function</option>
+        <option value="consulting">Consulting</option>
+        <option value="marketing">Marketing</option>
+        <option value="sales">Sales</option>
+        <option value="engineering">Engineering</option>
+    </select>
+
+    <label for="seniority">Seniority:</label>
+    <select id="seniority" name="seniority">
+        <option value="">Select Seniority</option>
+        <option value="junior">Junior</option>
+        <option value="mid">Mid</option>
+        <option value="senior">Senior</option>
+        <option value="lead">Lead</option>
+        <option value="director">Director</option>
+    </select>
+
+    <label for="visa-sponsorship">
+        <input type="checkbox" id="visa-sponsorship" name="visa-sponsorship" />
+        Require Visa Sponsorship?
+    </label>
+
+    <label for="industry">Industry:</label>
+    <select id="industry" name="industry">
+        <option value="">Select Industry</option>
+        <option value="technology">Technology</option>
+        <option value="finance">Finance</option>
+        <option value="healthcare">Healthcare</option>
+        <option value="education">Education</option>
+    </select>
+
+    <button
+        _="on click add .popup-hidden to #popup-window then remove .blur-bg from #main"
+        class="w-2/3 mt-4 cursor-pointer rounded-lg border-2 border-black text-black hover:text-black bg-background hover:bg-white transition-colors ease-in-out duration-300"
+    >
+        Apply Filters & Shoot!
+    </button>
+</form>

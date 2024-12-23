@@ -6,9 +6,8 @@ import (
 	"log"
 	"mentoref-webapp/db"
 	"mentoref-webapp/internal/handler/auth"
-	"mentoref-webapp/internal/handler/page/dashboard/user"
-	"mentoref-webapp/internal/handler/page/index"
-	"mentoref-webapp/internal/handler/page/index/index_component"
+	"mentoref-webapp/internal/handler/components"
+	"mentoref-webapp/internal/handler/pages"
 	"mentoref-webapp/internal/middleware"
 	"mentoref-webapp/web"
 	"net/http"
@@ -31,18 +30,19 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", staticFileServer))
 
 	// page
-	mux.HandleFunc("/", middleware.JWTAuthMiddleware(index.IndexHandler()))
-	mux.HandleFunc("/dashboard", middleware.JWTAuthMiddleware(user.DashboardHandler(client)))
+	mux.HandleFunc("/", middleware.JWTAuthMiddleware(pages.IndexHandler()))
+	mux.HandleFunc("/dashboard", middleware.JWTAuthMiddleware(pages.DashboardHandler(client)))
 
 	// auth
 	mux.HandleFunc("/signin", auth.SignInHandler(client))
 	mux.HandleFunc("/signup", auth.SignUpHandler(client))
 	mux.HandleFunc("/signout", auth.SignOutHandler())
 
-	// page/index/component
-	mux.HandleFunc("/blank-shot", index_component.BlankShotHandler())
-	mux.HandleFunc("/referral", index_component.ReferralHandler())
-	mux.HandleFunc("/mentorship", index_component.MentorshipHandler())
+	// components
+	mux.HandleFunc("/blank-shot", components.FeatureBlockHandler())
+	mux.HandleFunc("/referral", components.FeatureBlockHandler())
+	mux.HandleFunc("/mentorship", components.FeatureBlockHandler())
+	mux.HandleFunc("/blank-shot-menu", components.BlankShotMenuHandler())
 
 	log.Fatal(http.ListenAndServeTLS(":443", os.Getenv("CERTIFICATE"), os.Getenv("PRIVATE_KEY"), mux))
 }

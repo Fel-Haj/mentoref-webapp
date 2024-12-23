@@ -1,6 +1,9 @@
-FROM golang:alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:alpine AS build
 
-WORKDIR /usr/local/app
+ARG TARGETOS
+ARG TARGETARCH
+
+WORKDIR /app
 
 RUN apk add --no-cache nodejs npm
 
@@ -8,13 +11,13 @@ COPY . .
 
 RUN npm ci && npm run build
 
-RUN go build -o app cmd/main.go
+RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o app cmd/main.go
 
 FROM alpine:latest
 
-WORKDIR /usr/local/app
+WORKDIR /app
 
-COPY --from=builder /usr/local/app/app .
+COPY --from=build /app .
 
 EXPOSE 443
 

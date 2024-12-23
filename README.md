@@ -22,6 +22,8 @@ For building the **TailwindCSS** styles also run `npm run build`.
 Lastly, build the **Go** application and run the binary:
 Run the following from project root in your terminal to build `$ go build -o bin/app cmd/main.go` (output optional) and to run the app `$ ./bin/app`.
 
+Creating a docker image and container is also possible by running `docker-compose up -d`.
+
 ## Features (WIP)
 
 - User authentication - Sign up, sign in, and sign out functionality with JWT-based authentication (OAuth implementation in review)

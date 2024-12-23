@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"mentoref-webapp/db"
-	"mentoref-webapp/internal/types"
+	"mentoref-webapp/internal/handler"
 	"net/http"
 	"time"
 
@@ -16,7 +16,7 @@ import (
 func SignUpHandler(client *mongo.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			err := types.SignUp.Execute(w, nil)
+			err := handler.SignUp.Execute(w, nil)
 			if err != nil {
 				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 				return
@@ -30,7 +30,7 @@ func SignUpHandler(client *mongo.Client) http.HandlerFunc {
 				return
 			}
 
-			var newUser types.User
+			var newUser db.User
 
 			newUser.ID = primitive.NewObjectID()
 			newUser.Email = r.FormValue("email")
