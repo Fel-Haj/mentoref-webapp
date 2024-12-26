@@ -8,11 +8,11 @@ import (
 
 func IndexHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		session, err := r.Cookie("access_token")
+		session, err := r.Cookie("session")
 
 		data := handler.PageData{
 			Title:         "MentoRef",
-			Authenticated: session != nil && err != nil,
+			Authenticated: session != nil,
 		}
 
 		err = handler.Index.Execute(w, data)

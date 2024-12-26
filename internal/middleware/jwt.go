@@ -23,7 +23,7 @@ func GenerateToken(user *db.User) (string, error) {
 	return signedToken, nil
 }
 
-func GetTokenData(cookie *http.Cookie) (jwt.MapClaims, error) {
+func GetClaims(cookie *http.Cookie) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method")

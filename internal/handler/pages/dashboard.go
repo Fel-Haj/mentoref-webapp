@@ -3,6 +3,7 @@ package pages
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"mentoref-webapp/db"
 	"mentoref-webapp/internal/handler"
 	"mentoref-webapp/internal/middleware"
@@ -11,14 +12,15 @@ import (
 
 func DashboardHandler(dbClient *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cookie, err := r.Cookie("access_token")
-		claims, err := middleware.GetTokenData(cookie)
+		cookie, err := r.Cookie("session")
+		claims, err := middleware.GetClaims(cookie)
 		if err != nil {
 			fmt.Println(err)
 		}
 
+		userId := fmt.Sprintf("%.0f", claims["userId"])
 		var user db.User
-		err = dbClient.QueryRow("SELECT first_name, last_name, email, phone FROM users WHERE email = $1", claims["userId"].(string)).Scan(
+		err = dbClient.QueryRow("SELECT first_name, last_name, email, phone FROM users WHERE id = $1", userId).Scan(
 			&user.FirstName,
 			&user.LastName,
 			&user.Email,
@@ -43,9 +45,9 @@ func DashboardHandler(dbClient *sql.DB) http.HandlerFunc {
 
 		err = handler.Dashboard.Execute(w, data)
 		if err != nil {
+			log.Printf("Template execution error: %v", err)
 			http.Error(w, "Error rendering template", http.StatusInternalServerError)
 			return
 		}
-
 	}
 }
