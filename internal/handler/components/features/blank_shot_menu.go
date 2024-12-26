@@ -1,4 +1,4 @@
-package components
+package features
 
 import (
 	"mentoref-webapp/internal/handler"

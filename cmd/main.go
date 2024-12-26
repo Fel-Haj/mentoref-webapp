@@ -1,14 +1,12 @@
 package main
 
 import (
-	"context"
 	"io/fs"
 	"log"
 	"mentoref-webapp/db"
-	"mentoref-webapp/internal/handler/auth"
-	"mentoref-webapp/internal/handler/components"
+	"mentoref-webapp/internal/handler/components/auth"
+	"mentoref-webapp/internal/handler/components/features"
 	"mentoref-webapp/internal/handler/pages"
-	"mentoref-webapp/internal/middleware"
 	"mentoref-webapp/web"
 	"net/http"
 	"os"
@@ -17,8 +15,8 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	client := db.ConnectDB(os.Getenv("MONGODB_URI"))
-	defer client.Disconnect(context.Background())
+	dbClient := db.ConnectDB()
+	defer dbClient.Close()
 
 	var StaticFiles = web.StaticFiles
 
@@ -30,19 +28,19 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", staticFileServer))
 
 	// page
-	mux.HandleFunc("/", middleware.JWTAuthMiddleware(pages.IndexHandler()))
-	mux.HandleFunc("/dashboard", middleware.JWTAuthMiddleware(pages.DashboardHandler(client)))
+	mux.HandleFunc("/", pages.IndexHandler())
+	mux.HandleFunc("/dashboard", pages.DashboardHandler(dbClient))
 
 	// auth
-	mux.HandleFunc("/signin", auth.SignInHandler(client))
-	mux.HandleFunc("/signup", auth.SignUpHandler(client))
+	mux.HandleFunc("/signin", auth.SignInHandler(dbClient))
+	mux.HandleFunc("/signup", auth.SignUpHandler(dbClient))
 	mux.HandleFunc("/signout", auth.SignOutHandler())
 
 	// components
-	mux.HandleFunc("/blank-shot", components.FeatureBlockHandler())
-	mux.HandleFunc("/referral", components.FeatureBlockHandler())
-	mux.HandleFunc("/mentorship", components.FeatureBlockHandler())
-	mux.HandleFunc("/blank-shot-menu", components.BlankShotMenuHandler())
+	mux.HandleFunc("/blank-shot", features.FeatureBlockHandler())
+	mux.HandleFunc("/referral", features.FeatureBlockHandler())
+	mux.HandleFunc("/mentorship", features.FeatureBlockHandler())
+	mux.HandleFunc("/blank-shot-menu", features.BlankShotMenuHandler())
 
 	log.Fatal(http.ListenAndServeTLS(":443", os.Getenv("CERTIFICATE"), os.Getenv("PRIVATE_KEY"), mux))
 }

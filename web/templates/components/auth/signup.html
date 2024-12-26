@@ -1,8 +1,9 @@
 <form
-    id="form"
+    novalidate
+    autocomplete="on"
+    hx-ext="response-targets"
     hx-post="/signup"
-    hx-target="#body"
-    hx-swap="outerHTML"
+    hx-target-4*="#error"
     class="flex flex-col items-center border border-test rounded-md shadow-lg gap-3 p-4"
 >
     <a
@@ -14,43 +15,48 @@
     <input
         type="email"
         name="email"
+        id="email"
         required
         placeholder="E-Mail"
-        class="border border-black rounded-md px-2"
+        tabindex="1"
+        class="input-text focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
     <input
         type="password"
         name="password"
+        id="password"
         required
         placeholder="Password"
-        class="border border-black rounded-md px-2"
+        tabindex="2"
+        class="input-text focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
     <input
         type="text"
         name="firstname"
+        id="firstname"
         required
         placeholder="First Name"
-        class="border border-black rounded-md px-2"
+        tabindex="3"
+        class="input-text focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
     <input
         type="text"
-        name="surname"
+        name="lastname"
+        id="lastname"
         required
-        placeholder="Surname"
-        class="border border-black rounded-md px-2"
+        placeholder="Last Name"
+        tabindex="4"
+        class="input-text focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
     <input
         type="tel"
         name="phone"
+        id="phone"
         placeholder="Phonenumber"
-        class="border border-black rounded-md px-2"
+        tabindex="5"
+        class="input-text focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
-    <input
-        type="text"
-        name="company"
-        placeholder="Company"
-        class="border border-black rounded-md px-2"
-    />
+    <div id="error" class="text-red-600"></div>
     <button
         type="submit"
         class="w-2/3 cursor-pointer rounded-lg border-2 border-black text-white hover:text-black bg-black hover:bg-white transition-colors ease-in-out duration-300"

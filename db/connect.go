@@ -1,73 +1,57 @@
 package db
 
 import (
-	"context"
+	"database/sql"
+	"fmt"
 	"log"
-	"time"
+	"os"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	_ "github.com/lib/pq"
 )
 
-type Account interface {
-	GetID() primitive.ObjectID
-	GetEmail() string
-	GetPassword() string
+type DBConfig struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+	DBName   string
+	SSLMode  string
 }
-
 type User struct {
-	ID          primitive.ObjectID `bson:"_id"`
-	Email       string             `bson:"email"`
-	Password    string             `bson:"password"`
-	FirstName   string             `bson:"first_name"`
-	Surname     string             `bson:"surname"`
-	Phone       string             `bson:"phone,omitempty"`
-	CompanyName string             `bson:"company_name,omitempty"`
+	ID        uint32
+	Email     string
+	Password  string
+	FirstName string
+	LastName  string
+	Phone     string
 }
 
-func (user *User) GetID() primitive.ObjectID {
-	return user.ID
+func GetDBConfig() DBConfig {
+	return DBConfig{
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DBName:   os.Getenv("DB_NAME"),
+		SSLMode:  os.Getenv("DB_SSLMODE"),
+	}
 }
 
-func (user *User) GetEmail() string {
-	return user.Email
-}
+func ConnectDB() *sql.DB {
+	config := GetDBConfig()
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		config.Host, config.Port, config.User, config.Password, config.DBName, config.SSLMode)
 
-func (user *User) GetPassword() string {
-	return user.Password
-}
-
-type Company struct {
-	ID          primitive.ObjectID `bson:"_id"`
-	Email       string             `bson:"email"`
-	Password    string             `bson:"password"`
-	CompanyName string             `bson:"company_name"`
-}
-
-func (company *Company) GetID() primitive.ObjectID {
-	return company.ID
-}
-
-func (company *Company) GetEmail() string {
-	return company.Email
-}
-
-func (company *Company) GetPassword() string {
-	return company.Password
-}
-
-func ConnectDB(uri string) *mongo.Client {
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = client.Ping(ctx, nil)
+	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
-	return client
+	fmt.Println("Successfully connected to database")
+
+	return db
 }

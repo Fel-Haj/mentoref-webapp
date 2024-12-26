@@ -6,7 +6,7 @@
 
 @layer components {
     .input-text {
-        @apply border border-black rounded-md px-2 bg-background;
+        @apply block w-full p-2 border border-black rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-blue-500;
     }
     .nav-btn {
         @apply cursor-pointer p-2 -m-2 rounded-md transition-colors duration-300 hover:bg-gray-400;
