@@ -9,7 +9,7 @@
     <button
         id="blank-shot"
         _="on click add .btn-feature-bar-active to me then remove .btn-feature-bar-active from #referral then remove .btn-feature-bar-active from #mentorship"
-        hx-get="/blank-shot"
+        hx-get="/feature?type=blank-shot"
         hx-target="#index-feature-container"
         hx-swap="transition:true"
         class="btn-feature btn-feature-bar"
@@ -19,7 +19,7 @@
     <button
         id="referral"
         _="on click add .btn-feature-bar-active to me then remove .btn-feature-bar-active from #blank-shot then remove .btn-feature-bar-active from #mentorship"
-        hx-get="/referral"
+        hx-get="/feature?type=referral"
         hx-target="#index-feature-container"
         hx-swap="transition:true"
         class="btn-feature btn-feature-bar"
@@ -29,7 +29,7 @@
     <button
         id="mentorship"
         _="on click add .btn-feature-bar-active to me then remove .btn-feature-bar-active from #blank-shot then remove .btn-feature-bar-active from #referral"
-        hx-get="/mentorship"
+        hx-get="/feature?type=mentorship"
         hx-target="#index-feature-container"
         hx-swap="transition:true"
         class="btn-feature btn-feature-bar"

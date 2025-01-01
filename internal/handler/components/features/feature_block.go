@@ -1,9 +1,8 @@
 package features
 
 import (
-	"mentoref-webapp/internal/handler"
+	"mentoref-webapp/web"
 	"net/http"
-	"strings"
 )
 
 type FeatureData struct {
@@ -22,7 +21,7 @@ var featureConfigs = map[string]FeatureData{
 		Description:  "Take a leap into new opportunities. Our Blank Shot feature connects you with potential employers and collaborators, showcasing your unique talents and aspirations.",
 		ButtonAction: "Shoot!",
 		VideoSrc:     "/static/image/animation/MentoRef_Anim.mov",
-		HxEndpoint:   "/blank-shot-menu",
+		HxEndpoint:   "/menu?type=blank-shot",
 	},
 	"mentorship": {
 		SubHeader:    "Navigate the job market with a seasoned mentor!",
@@ -45,7 +44,7 @@ var featureConfigs = map[string]FeatureData{
 func FeatureBlockHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			featureType := strings.TrimPrefix(r.URL.Path, "/")
+			featureType := r.URL.Query().Get("type")
 
 			data, exists := featureConfigs[featureType]
 			if !exists {
@@ -53,7 +52,7 @@ func FeatureBlockHandler() http.HandlerFunc {
 				return
 			}
 
-			err := handler.FeatureBlock.Execute(w, data)
+			err := web.FeatureBlock.Execute(w, data)
 			if err != nil {
 				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 				return

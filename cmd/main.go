@@ -6,6 +6,7 @@ import (
 	"mentoref-webapp/db"
 	"mentoref-webapp/internal/handler/components/auth"
 	"mentoref-webapp/internal/handler/components/features"
+	"mentoref-webapp/internal/handler/components/menu"
 	"mentoref-webapp/internal/handler/pages"
 	"mentoref-webapp/web"
 	"net/http"
@@ -27,7 +28,7 @@ func main() {
 	staticFileServer := http.FileServer(http.FS(staticFileSystem))
 	mux.Handle("/static/", http.StripPrefix("/static/", staticFileServer))
 
-	// page
+	// pages
 	mux.HandleFunc("/", pages.IndexHandler())
 	mux.HandleFunc("/dashboard", pages.DashboardHandler(dbClient))
 
@@ -37,10 +38,10 @@ func main() {
 	mux.HandleFunc("/signout", auth.SignOutHandler())
 
 	// components
-	mux.HandleFunc("/blank-shot", features.FeatureBlockHandler())
-	mux.HandleFunc("/referral", features.FeatureBlockHandler())
-	mux.HandleFunc("/mentorship", features.FeatureBlockHandler())
-	mux.HandleFunc("/blank-shot-menu", features.BlankShotMenuHandler())
+	mux.HandleFunc("/feature", features.FeatureBlockHandler())
+	mux.HandleFunc("/menu", menu.MenuHandler(dbClient))
+	mux.HandleFunc("/options", menu.OptionsHandler())
+	mux.HandleFunc("/notification", menu.MenuHandler(dbClient))
 
 	log.Fatal(http.ListenAndServeTLS(":443", os.Getenv("CERTIFICATE"), os.Getenv("PRIVATE_KEY"), mux))
 }

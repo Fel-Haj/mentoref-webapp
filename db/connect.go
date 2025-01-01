@@ -17,6 +17,7 @@ type DBConfig struct {
 	DBName   string
 	SSLMode  string
 }
+
 type User struct {
 	ID        uint32
 	Email     string
@@ -24,6 +25,16 @@ type User struct {
 	FirstName string
 	LastName  string
 	Phone     string
+}
+
+type Company struct {
+	ID           uint32
+	ContactEmail string
+	Password     string
+	Name         string
+	Address      string
+	Postcode     string
+	Country      string
 }
 
 func GetDBConfig() DBConfig {

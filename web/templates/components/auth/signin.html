@@ -1,18 +1,11 @@
 <form
-    novalidate
     autocomplete="on"
     hx-ext="response-targets"
     hx-post="/signin"
+    hx-indicator="#loading-indicator"
     hx-target-401="#error"
     class="flex flex-col items-center border border-test rounded-md shadow-lg gap-3 p-4"
 >
-    <a
-        _="on click add .popup-hidden to #popup-window then remove .blur-bg from #main"
-        class="absolute top-0 right-1 cursor-pointer"
-    >
-        <i class="fa-solid fa-xmark hover:text-gray-400"></i>
-    </a>
-
     <input
         type="email"
         name="email"
@@ -35,12 +28,16 @@
     <div id="error" class="text-red-600"></div>
 
     <button
-        type="submit"
-        tabindex="3"
-        class="w-2/3 cursor-pointer rounded-lg border-2 border-black text-white hover:text-black bg-background hover:bg-white transition-colors ease-in-out duration-300"
         _="on htmx:afterOnLoad hide #popup-window"
+        id="loading-indicator"
+        type="submit"
+        class="flex gap-x-2 items-center justify-center w-2/3 cursor-pointer rounded-lg border-2 border-black p-2 text-white hover:text-black bg-background hover:bg-white transition-colors ease-in-out duration-300"
     >
-        Sign In
+        <span>Sign In</span>
+        <img
+            class="w-6 h-6 htmx-indicator"
+            src="/static/image/animation/loading.svg"
+        />
     </button>
 
     <ul class="flex gap-x-2">
@@ -48,9 +45,9 @@
         <li>
             <a
                 _="on click add .popup-hidden to #popup-window then settle then remove .popup-hidden from #popup-window"
-                hx-get="/signup"
+                hx-get="/signup?type=user"
                 hx-trigger="click"
-                hx-target="#popup-window"
+                hx-target="#popup-content"
                 hx-swap="innerHTML swap:0.5s"
                 hx-push-url="false"
                 class="hover:text-blue-300 text-gray-500 cursor-pointer"

@@ -15,7 +15,8 @@ func SignOutHandler() http.HandlerFunc {
 			}
 			cookie.Expires = time.Now()
 			http.SetCookie(w, cookie)
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			w.Header().Set("HX-Redirect", "/")
+			return
 		}
 	}
 }

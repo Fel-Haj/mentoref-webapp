@@ -9,18 +9,27 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenerateToken(user *db.User) (string, error) {
-	claims := jwt.MapClaims{
-		"userId": user.ID,
+func GenerateToken(entity interface{}) string {
+	claims := jwt.MapClaims{}
+
+	switch v := entity.(type) {
+	case *db.User:
+		claims["userId"] = v.ID
+	case *db.Company:
+		claims["companyId"] = v.ID
+	default:
+		fmt.Println("invalid entity type")
+		return ""
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
 	if err != nil {
-		return "", err
+		fmt.Printf("Error generating token: %v\n", err)
+		return ""
 	}
 
-	return signedToken, nil
+	return signedToken
 }
 
 func GetClaims(cookie *http.Cookie) (jwt.MapClaims, error) {
