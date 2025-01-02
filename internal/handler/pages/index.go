@@ -9,31 +9,22 @@ import (
 
 type IndexPageData struct {
 	Title         string
-	UserType      string
+	AccType       string
 	Authenticated bool
 }
 
 func IndexHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		session, err := r.Cookie("session")
-		var userType string
+		var accType string
 		var authenticated bool
-
+		accType, err := middleware.GetAccountType(r)
 		if err == nil {
-			claims, err := middleware.GetClaims(session)
-			if err == nil {
-				if claims["userId"] != nil {
-					userType = "user"
-				} else if claims["companyId"] != nil {
-					userType = "company"
-				}
-				authenticated = true
-			}
+			authenticated = true
 		}
 
 		data := IndexPageData{
 			Title:         "MentoRef",
-			UserType:      userType,
+			AccType:       accType,
 			Authenticated: authenticated,
 		}
 

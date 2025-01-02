@@ -18,6 +18,7 @@ type CompanyDashboardPageData struct {
 	Address       string
 	Postcode      string
 	Country       string
+	AccType       string
 	Authenticated bool
 }
 
@@ -29,7 +30,7 @@ type UserDashboardPageData struct {
 	Phone         string
 	Experience    []WorkExperience
 	BlankShots    []BlankShot
-	UserType      string
+	AccType       string
 	Authenticated bool
 }
 
@@ -58,14 +59,17 @@ type BlankShot struct {
 func DashboardHandler(dbClient *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			cookie, err := r.Cookie("session")
-			claims, err := middleware.GetClaims(cookie)
-			if err != nil {
-				fmt.Println(err)
+			var accType string
+			var authenticated bool
+			accType, err := middleware.GetAccountType(r)
+			if err == nil {
+				authenticated = true
 			}
-			accType := r.URL.Query().Get("type")
 			if accType == "user" {
-				userId := fmt.Sprintf("%.0f", claims["userId"])
+				userId, err := middleware.GetAccountID(r)
+				if err != nil {
+					fmt.Printf("Error getting Account ID: %v", err)
+				}
 				var user db.User
 				err = dbClient.QueryRow("SELECT first_name, last_name, email, phone FROM users WHERE id = $1", userId).Scan(
 					&user.FirstName,
@@ -127,8 +131,8 @@ func DashboardHandler(dbClient *sql.DB) http.HandlerFunc {
 					Phone:         user.Phone,
 					Experience:    experience,
 					BlankShots:    shots,
-					UserType:      accType,
-					Authenticated: true,
+					AccType:       accType,
+					Authenticated: authenticated,
 				}
 				err = web.UserDashboard.Execute(w, data)
 				if err != nil {
@@ -137,9 +141,12 @@ func DashboardHandler(dbClient *sql.DB) http.HandlerFunc {
 					return
 				}
 			} else if accType == "company" {
-				userId := fmt.Sprintf("%.0f", claims["companyId"])
+				companyId, err := middleware.GetAccountID(r)
+				if err != nil {
+					fmt.Println("Error getting Account ID")
+				}
 				var company db.Company
-				err = dbClient.QueryRow("SELECT contact_email, company_name, company_address, company_postcode, company_country FROM companies WHERE id = $1", userId).Scan(
+				err = dbClient.QueryRow("SELECT contact_email, company_name, company_address, company_postcode, company_country FROM companies WHERE id = $1", companyId).Scan(
 					&company.ContactEmail,
 					&company.Name,
 					&company.Address,
@@ -158,7 +165,8 @@ func DashboardHandler(dbClient *sql.DB) http.HandlerFunc {
 					Address:       company.Address,
 					Postcode:      company.Postcode,
 					Country:       company.Country,
-					Authenticated: true,
+					AccType:       accType,
+					Authenticated: authenticated,
 				}
 				err = web.CompanyDashboard.Execute(w, data)
 				if err != nil {

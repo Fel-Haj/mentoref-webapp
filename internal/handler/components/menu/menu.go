@@ -208,16 +208,10 @@ func MenuHandler(dbClient *sql.DB) http.HandlerFunc {
 			}
 		}
 		if r.Method == "POST" {
-			cookie, err := r.Cookie("session")
+			userId, err := middleware.GetAccountID(r)
 			if err != nil {
-				w.Header().Set("HX-Location", `{"path":"/notification?type=blank-shot-error-signin", "target":"#popup-content"}`)
-				return
+				fmt.Println("Error getting Account ID")
 			}
-			claims, err := middleware.GetClaims(cookie)
-			if err != nil {
-				fmt.Println(err)
-			}
-			userId := fmt.Sprintf("%.0f", claims["userId"])
 
 			continent := r.FormValue("continent")
 			continentMap := map[string]string{

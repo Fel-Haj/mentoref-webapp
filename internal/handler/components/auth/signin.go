@@ -2,7 +2,6 @@ package auth
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"mentoref-webapp/db"
 	"mentoref-webapp/internal/middleware"
@@ -25,7 +24,6 @@ func checkPassword(w http.ResponseWriter, storedPassword string, email string, p
 
 func SignIn(w http.ResponseWriter, dbClient *sql.DB, email string, password string) {
 	var token string
-	var urlQuery string
 
 	var user db.User
 	err := dbClient.QueryRow(`SELECT id, email, password FROM users WHERE email = $1`, email).
@@ -36,7 +34,6 @@ func SignIn(w http.ResponseWriter, dbClient *sql.DB, email string, password stri
 			return
 		}
 		token = middleware.GenerateToken(&user)
-		urlQuery = "?type=user"
 	} else {
 		var company db.Company
 		err = dbClient.QueryRow(`SELECT id, contact_email, password FROM companies WHERE contact_email = $1`, email).
@@ -56,7 +53,6 @@ func SignIn(w http.ResponseWriter, dbClient *sql.DB, email string, password stri
 			return
 		}
 		token = middleware.GenerateToken(&company)
-		urlQuery = "?type=company"
 	}
 
 	http.SetCookie(w, &http.Cookie{
@@ -68,7 +64,7 @@ func SignIn(w http.ResponseWriter, dbClient *sql.DB, email string, password stri
 		SameSite: http.SameSiteStrictMode,
 		// Path:     "/",
 	})
-	w.Header().Set("HX-Redirect", fmt.Sprintf("/dashboard%s", urlQuery))
+	w.Header().Set("HX-Redirect", "/dashboard")
 	// w.Header().Set("HX-Redirect", "/dashboard")
 	return
 }
