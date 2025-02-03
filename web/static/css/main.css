@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .input-text {
+        @apply w-full p-2 border border-black rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-blue-500;
+    }
+    .nav-btn {
+        @apply cursor-pointer p-2 -m-2 rounded-md transition-colors duration-300 hover:bg-gray-400;
+    }
+    .btn-feature {
+        @apply shadow-md rounded-lg text-white bg-test ring-2 ring-test active:bg-gray-400 hover:text-black hover:bg-white transition ease-in-out duration-300;
+    }
+    .btn-feature-bar {
+        @apply py-3 px-6 text-2xl font-semibold;
+    }
+    .btn-feature-bar-active {
+        @apply outline-none ring-2 ring-test text-black bg-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out;
+    }
+    .btn-feature-component {
+        @apply py-2 px-4 hover:-translate-y-1 hover:translate-x-1;
+    }
+    .menu-item-hidden {
+        @apply hidden;
+    }
+    .filter-visible {
+        @apply !max-h-96;
+    }
+    .htmx-indicator {
+        @apply hidden;
+    }
+    .htmx-request .htmx-indicator {
+        @apply inline;
+    }
+}
+
+@layer utilities {
+    .popup-hidden {
+        @apply -translate-y-[300%] opacity-0;
+    }
+    .blur-bg {
+        @apply bg-black bg-opacity-15 blur-sm z-10 transition ease-in duration-300;
+    }
+}
+
+@layer .vt-index-feature {
+    view-transition-name: index-feature;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+@keyframes fade-out {
+    to {
+        opacity: 0;
+    }
+}
+@keyframes slide-to-top {
+    to {
+        transform: translateY(-90px);
+    }
+}
+@keyframes slide-from-bottom {
+    from {
+        transform: translateY(90px);
+    }
+}
+
+::view-transition-old(index-feature) {
+    animation:
+        200ms ease-out 100ms both fade-out,
+        600ms ease-in both slide-to-top;
+}
+::view-transition-new(index-feature) {
+    animation:
+        300ms ease-in 200ms both fade-in,
+        600ms ease-out both slide-from-bottom;
+}

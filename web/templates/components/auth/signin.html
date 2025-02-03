@@ -1,0 +1,58 @@
+<form
+    autocomplete="on"
+    hx-post="/signin"
+    hx-indicator="#loading-indicator"
+    hx-target-401="#error"
+    class="flex flex-col items-center border border-test rounded-md shadow-lg gap-3 p-4"
+>
+    <input
+        type="email"
+        name="email"
+        id="email"
+        required
+        placeholder="E-Mail"
+        tabindex="1"
+        class="input-text focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+
+    <input
+        type="password"
+        name="password"
+        id="password"
+        required
+        placeholder="Password"
+        tabindex="2"
+        class="input-text focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <div id="error" class="text-red-600"></div>
+
+    <button
+        _="on htmx:afterOnLoad hide #popup-window"
+        id="loading-indicator"
+        type="submit"
+        class="flex gap-x-2 items-center justify-center w-2/3 cursor-pointer rounded-lg border-2 border-black p-2 text-white hover:text-black bg-background hover:bg-white transition-colors ease-in-out duration-300"
+    >
+        <span>Sign In</span>
+        <img
+            class="w-6 h-6 htmx-indicator"
+            src="/static/image/animation/loading.svg"
+        />
+    </button>
+
+    <ul class="flex gap-x-2">
+        <li class="text-black">New here?</li>
+        <li>
+            <a
+                _="on click add .popup-hidden to #popup-window then settle then remove .popup-hidden from #popup-window"
+                hx-get="/signup?type=user"
+                hx-trigger="click"
+                hx-target="#popup-content"
+                hx-swap="innerHTML swap:0.5s"
+                hx-push-url="false"
+                class="hover:text-blue-300 text-gray-500 cursor-pointer"
+            >
+                Register now.
+            </a>
+        </li>
+    </ul>
+</form>

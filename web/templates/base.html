@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <link rel="icon" href="/static/image/favicon.ico" />
+        <link rel="stylesheet" href="/static/css/styles.css" />
+        <script src="/static/js/htmx.min.js"></script>
+        <script src="https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js"></script>
+        <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+        <script
+            src="https://kit.fontawesome.com/8e525bfb1d.js"
+            crossorigin="anonymous"
+        ></script>
+        {{template "head" .}}
+    </head>
+
+    <body id="body" hx-ext="response-targets" class="font-body">
+        <nav
+            class="flex items-center justify-between gap-x-8 px-16 py-2 top-0 border-b-2 border-gray-400 border-opacity-20 bg-test"
+        >
+            <ul class="flex items-center gap-x-8 text-white">
+                <li
+                    hx-get="/"
+                    hx-trigger="click"
+                    hx-target="body"
+                    hx-swap="transition:true"
+                    hx-push-url="true"
+                    class="cursor-pointer"
+                >
+                    <!-- <img
+                        src="/static/image/logo/Mentoref.jpg"
+                        alt="MentoRef Logo"
+                        class="h-16"
+                    /> -->
+                    <div class="flex gap-2 items-center">
+                        <i class="fa-solid fa-user-ninja fa-2x"></i>
+                        <h1 class="text-white font-bold text-4xl">MentoRef</h1>
+                    </div>
+                </li>
+                <li
+                    hx-get="/"
+                    hx-trigger="click"
+                    hx-target="body"
+                    class="nav-btn"
+                >
+                    Solutions
+                </li>
+                <li
+                    hx-get="/"
+                    hx-trigger="click"
+                    hx-target="body"
+                    class="nav-btn"
+                >
+                    Pricing
+                </li>
+                <li
+                    hx-get="/"
+                    hx-trigger="click"
+                    hx-target="body"
+                    class="nav-btn"
+                >
+                    Blog
+                </li>
+            </ul>
+            {{if .Authenticated}}
+            <div class="relative group">
+                <div class="p-2 -m-2">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-8 text-white group-hover:text-gray-400 transition-colors ease-out duration-300"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                        />
+                    </svg>
+                </div>
+                <ul
+                    class="absolute flex flex-col gap-y-2 items-center top-full left-1/2 -translate-x-1/2 group-hover:translate-y-2 bg-white border border-test rounded-md shadow-md p-2 transition opacity-0 -translate-y-28 ease-in-out duration-1000 group-hover:opacity-100"
+                >
+                    <li
+                        hx-get="/dashboard"
+                        hx-trigger="click"
+                        hx-target="#body"
+                        hx-swap="innerHTML"
+                        hx-push-url="true"
+                        class="cursor-pointer hover:text-gray-400 transition-colors duration-300"
+                    >
+                        Dashboard
+                    </li>
+                    <li
+                        hx-post="/signout"
+                        hx-trigger="click"
+                        hx-target="#body"
+                        hx-swap="outerHTML"
+                        class="cursor-pointer hover:text-gray-400 transition-colors duration-300"
+                    >
+                        Sign Out
+                    </li>
+                </ul>
+            </div>
+            {{else}}
+            <button
+                _="on click remove .popup-hidden from #popup-window then add .blur-bg to #main"
+                hx-get="/signin"
+                hx-target="#popup-content"
+                class="py-2 px-4 ml-12 rounded-lg border border-gray-600 text-black bg-background hover:bg-gray-500 transition-colors ease-in-out duration-300"
+            >
+                Sign In
+            </button>
+            {{end}}
+        </nav>
+        <div
+            id="popup-window"
+            class="popup-hidden fixed rounded-md shadow-md border border-gray-500 bg-test top-1/2 left-1/2 transition -translate-x-1/2 -translate-y-1/2 ease-in-out duration-500 z-20"
+        >
+            <a
+                _="on click add .popup-hidden to #popup-window then remove .blur-bg from #main"
+                class="absolute top-0 right-1 cursor-pointer"
+            >
+                <i class="fa-solid fa-xmark hover:text-gray-400"></i>
+            </a>
+            <div id="popup-content"></div>
+        </div>
+        <main id="main" class="py-12 px-16 transition duration-150">
+            {{template "main" .}}
+        </main>
+        <footer class="bg-test text-white bottom-0 gap-2 p-16">
+            <div class="grid grid-cols-5 justify-items-center items-start">
+                <div class="col-span-2 self-center">
+                    <p>
+                        Contact us at
+                        <a
+                            class="hover:text-gray-400"
+                            href="mailto:info@mentoref.com"
+                            >info@mentoref.com</a
+                        >
+                    </p>
+                </div>
+                <ul class="flex flex-col gap-y-6">
+                    <h1 class="font-bold">Info</h1>
+                    <li>Home</li>
+                    <li>Pricing</li>
+                    <li>About Us</li>
+                    <li>Blog</li>
+                    <li>Feature</li>
+                </ul>
+                <ul class="flex flex-col gap-y-6">
+                    <h1 class="font-bold">Admin</h1>
+                    <li>Style Guide</li>
+                    <li>License</li>
+                    <li>Log In</li>
+                    <li>Sign Up</li>
+                    <li>Downloads</li>
+                </ul>
+                <ul class="flex flex-col gap-y-6 items-center">
+                    <h1 class="font-bold">Follow us</h1>
+                    <li class="flex items-center gap-x-2">
+                        <i class="fa-brands fa-linkedin"></i>
+                    </li>
+                    <li class="flex items-center gap-x-2">
+                        <i class="fa-brands fa-facebook"></i>
+                    </li>
+                    <li class="flex items-center gap-x-2">
+                        <i class="fa-brands fa-instagram"></i>
+                    </li>
+                    <li class="flex items-center gap-x-2">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </li>
+                </ul>
+            </div>
+            <p class="left-0 bottom-0 -ml-14 -mb-14">
+                2024 MentoRef&copy;. All rights reserved.
+            </p>
+        </footer>
+    </body>
+</html>

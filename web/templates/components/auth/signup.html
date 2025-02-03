@@ -1,0 +1,37 @@
+<form
+    autocomplete="on"
+    hx-post="{{.HxEndpoint}}"
+    hx-target-4*="#error"
+    class="flex flex-col items-center border border-test rounded-md shadow-lg gap-3 p-4"
+>
+    {{.Fields}}
+    <div id="error" class="text-red-600"></div>
+    <button
+        _="on htmx:afterOnLoad hide #popup-window"
+        type="submit"
+        class="w-2/3 cursor-pointer rounded-lg border-2 border-black text-white hover:text-black bg-black hover:bg-white transition-colors ease-in-out duration-300"
+    >
+        {{.ButtonText}}
+    </button>
+    <div class="flex gap-x-2">
+        <a
+            _="on click add .popup-hidden to #popup-window then settle then remove .popup-hidden from #popup-window"
+            hx-get="{{.HxLinkEndpoint}}"
+            hx-trigger="click"
+            hx-target="#popup-content"
+            hx-swap="innerHTML swap:0.5s"
+            class="hover:text-blue-300 text-gray-500 cursor-pointer"
+            >{{.LinkText}}</a
+        >
+        <span>|</span>
+        <a
+            _="on click add .popup-hidden to #popup-window then settle then remove .popup-hidden from #popup-window"
+            hx-get="/signin"
+            hx-trigger="click"
+            hx-target="#popup-content"
+            hx-swap="innerHTML swap:0.5s"
+            class="hover:text-blue-300 text-gray-500 cursor-pointer"
+            >Sign in</a
+        >
+    </div>
+</form>

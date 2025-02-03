@@ -1,0 +1,146 @@
+{{define "head"}}
+<title>{{.Title}}</title>
+{{end}} {{define "main"}}
+<h1 class="text-6xl font-bold text-center pt-4 pb-8">
+    People are more than what they do.<br />Companies are more than what they
+    offer.
+</h1>
+<div class="flex justify-center gap-x-32 pb-4 pt-8">
+    <button
+        id="blank-shot"
+        _="on click add .btn-feature-bar-active to me then remove .btn-feature-bar-active from #referral then remove .btn-feature-bar-active from #mentorship"
+        hx-get="/feature?type=blank-shot"
+        hx-target="#index-feature-container"
+        hx-swap="transition:true"
+        class="btn-feature btn-feature-bar"
+    >
+        Blank Shot
+    </button>
+    <button
+        id="referral"
+        _="on click add .btn-feature-bar-active to me then remove .btn-feature-bar-active from #blank-shot then remove .btn-feature-bar-active from #mentorship"
+        hx-get="/feature?type=referral"
+        hx-target="#index-feature-container"
+        hx-swap="transition:true"
+        class="btn-feature btn-feature-bar"
+    >
+        Referral
+    </button>
+    <button
+        id="mentorship"
+        _="on click add .btn-feature-bar-active to me then remove .btn-feature-bar-active from #blank-shot then remove .btn-feature-bar-active from #referral"
+        hx-get="/feature?type=mentorship"
+        hx-target="#index-feature-container"
+        hx-swap="transition:true"
+        class="btn-feature btn-feature-bar"
+    >
+        Mentorship
+    </button>
+</div>
+<div
+    id="index-feature-container"
+    class="vt-index-feature flex justify-center items-center pt-4 pb-32"
+>
+    <h2 class="text-4xl font-bold text-center pb-8">
+        Check out our three core solutions!
+    </h2>
+</div>
+<h2 class="text-4xl font-bold text-center">Trusted by the Best</h2>
+<h3 class="font-bold text-center">These industry leaders choose us.</h3>
+<div
+    class="relative overflow-hidden py-8 [mask-image:_linear-gradient(to_right,_transparent_0,_white_128px,white_calc(100%-128px),_transparent_100%)]"
+>
+    <div class="flex items-center w-max animate-carousel">
+        <img
+            src="/static/image/logo/General Electric logo.svg"
+            alt="GE Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/JPMorgan Chase logo.svg"
+            alt="JPMorgan Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/LVMH logo.svg"
+            alt="LVMH Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/McKinsey Company logo.svg"
+            alt="McKinsey Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/Microsoft logo.svg"
+            alt="Microsoft Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/Nike logo.svg"
+            alt="Nike Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/PayPal logo.svg"
+            alt="PayPal Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/Toyota logo.svg"
+            alt="Toyota Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/Uber logo.svg"
+            alt="Uber Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/General Electric logo.svg"
+            alt="GE Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/JPMorgan Chase logo.svg"
+            alt="JPMorgan Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/LVMH logo.svg"
+            alt="LVMH Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/McKinsey Company logo.svg"
+            alt="McKinsey Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/Microsoft logo.svg"
+            alt="Microsoft Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/Nike logo.svg"
+            alt="Nike Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/PayPal logo.svg"
+            alt="PayPal Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/Toyota logo.svg"
+            alt="Toyota Logo"
+            class="h-12 mx-8"
+        />
+        <img
+            src="/static/image/logo/Uber logo.svg"
+            alt="Uber Logo"
+            class="h-12 mx-8"
+        />
+    </div>
+</div>
+{{end}}

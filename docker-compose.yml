@@ -1,0 +1,15 @@
+services:
+  mentoref:
+    build: .
+    ports:
+      - "443:443"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      SECRET_KEY: ${SECRET_KEY}
+      PRIVATE_KEY: ${PRIVATE_KEY}
+      CERTIFICATE: ${CERTIFICATE}
+    volumes:
+      - ./certs:/usr/local/app/certs
+
+volumes:
+  certs:

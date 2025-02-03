@@ -1,0 +1,10 @@
+.air.toml
+.vscode
+**/.DS_Store
+
+bin
+certs
+node_modules
+tmp
+web/static/image/logo
+web/static/css/styles.css
